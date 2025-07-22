@@ -19,8 +19,10 @@
             padding: 20px;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
         
         .container {
@@ -289,6 +291,60 @@
             border-radius: 10px;
             line-height: 1.5;
         }
+
+        .goal-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .goal-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .goal-option.selected {
+            background: #fdbb2d;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+        
+        .goal-week-container {
+            margin-top: 15px;
+        }
+        
+        .week-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .week-tab {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .week-tab.active {
+            background: #fdbb2d;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+        
+        .week-content {
+            display: none;
+        }
+        
+        .week-content.active {
+            display: block;
+        }
         
         @media (max-width: 480px) {
             .container {
@@ -311,6 +367,48 @@
             .checkbox-item {
                 min-width: 100px;
             }
+            
+            .goal-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+	        /* 页脚样式 */
+        .footer {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            border: 1px solid rgba(253, 187, 45, 0.3);
+            backdrop-filter: blur(5px);
+            margin-top: 10px;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            color: #fdbb2d;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fdbb2d, transparent);
+        }
+        
+        .footer i {
+            color: #b21f1f;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -336,47 +434,99 @@
                 </div>
                 
                 <div class="input-group">
-                    <label for="currentPoints"><i class="fas fa-coins"></i> 已获得经营点数</label>
-                    <input type="number" id="currentPoints" min="0" value="25000">
-                </div>
-                
-                <div class="input-group">
                     <label for="dailyDays"><i class="fas fa-calendar-day"></i> 已完成每日任务天数</label>
-                    <input type="number" id="dailyDays" min="0" max="37" value="15">
+                    <input type="number" id="dailyDays" min="0" max="37" value="0">
                 </div>
                 
                 <div class="input-group">
                     <label><i class="fas fa-futbol"></i> 每周进球任务完成情况</label>
-                    <div class="checkbox-group" id="goalWeeks">
-                        <div class="checkbox-item" data-value="1">第1周</div>
-                        <div class="checkbox-item" data-value="2">第2周</div>
-                        <div class="checkbox-item" data-value="3">第3周</div>
-                        <div class="checkbox-item" data-value="4">第4周</div>
-                        <div class="checkbox-item selected" data-value="5">第5周</div>
-                        <div class="checkbox-item selected" data-value="6">第6周</div>
+                    <div class="week-selector" id="weekSelector">
+                        <div class="week-tab active" data-week="1">第1周</div>
+                        <div class="week-tab" data-week="2">第2周</div>
+                        <div class="week-tab" data-week="3">第3周</div>
+                        <div class="week-tab" data-week="4">第4周</div>
+                        <div class="week-tab" data-week="5">第5周</div>
+                        <div class="week-tab" data-week="6">第6周</div>
+                    </div>
+                    
+                    <div class="goal-week-container">
+                        <div class="week-content active" data-week="1">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800经营点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900经营点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000经营点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="2">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800经营点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900经营点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000经营点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="3">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800经营点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900经营点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000经营点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="4">
+                            <div class="goal-options">
+                               <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800经营点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900经营点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000经营点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="5">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800经营点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900经营点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000经营点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="6">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800经营点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800经营点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900经营点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000经营点)</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="input-group">
                     <label><i class="fas fa-shopping-cart"></i> 每周金币任务完成情况</label>
                     <div class="checkbox-group" id="goldWeeks">
-                        <div class="checkbox-item" data-value="1">第1周</div>
-                        <div class="checkbox-item" data-value="2">第2周</div>
+                        <div class="checkbox-item selected" data-value="1">第1周</div>
+                        <div class="checkbox-item selected" data-value="2">第2周</div>
                         <div class="checkbox-item" data-value="3">第3周</div>
                         <div class="checkbox-item" data-value="4">第4周</div>
-                        <div class="checkbox-item selected" data-value="5">第5周</div>
-                        <div class="checkbox-item selected" data-value="6">第6周</div>
+                        <div class="checkbox-item" data-value="5">第5周</div>
+                        <div class="checkbox-item" data-value="6">第6周</div>
                     </div>
                 </div>
                 
                 <div class="input-group">
                     <label for="goldSpent"><i class="fas fa-coins"></i> 已消费金币</label>
-                    <input type="number" id="goldSpent" min="0" value="8000">
+                    <input type="number" id="goldSpent" min="0" value="0">
                 </div>
                 
                 <div class="input-group">
                     <label for="goalsScored"><i class="fas fa-bullseye"></i> 个人累计进球数</label>
-                    <input type="number" id="goalsScored" min="0" value="180">
+                    <input type="number" id="goalsScored" min="0" value="350">
                 </div>
                 
                 <div class="input-group">
@@ -397,7 +547,7 @@
             
             <div class="btn-container">
                 <button id="calculateBtn">
-                    <i class="fas fa-calculator"></i> 计算活动进度
+                    <i class="fas fa-calculator"></i> 开始计算
                 </button>
             </div>
         </div>
@@ -441,7 +591,7 @@
                         <span id="extraSpending">0</span>
                     </div>
                     <div class="point-item" style="font-weight: bold; border-top: 1px solid #fdbb2d; padding-top: 10px;">
-                        <span>总经营点数：</span>
+                        <span>预计经营点数：</span>
                         <span id="totalPoints">0</span>
                     </div>
                 </div>
@@ -451,11 +601,15 @@
                 </div>
                 
                 <div class="tip">
-                    <p><i class="fas fa-lightbulb"></i> 活动提示：完成所有每日任务、每周任务和全服任务，并消费24,000金币可稳定获得96+增能礼包</p>
+                    <p><i class="fas fa-lightbulb"></i> 活动提示：完成所有每日任务、每周任务、累计任务和全服任务，并消费11,000金币可稳定获得96+增能礼包</p>
                     <p><i class="fas fa-futbol"></i> 每周完成40个进球和消费2000金币可最大化收益！</p>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="footer">
+		<i class="fas fa-user"></i>@大众评球 作者:不出维埃拉不改名(已兑换)
     </div>
 
     <script>
@@ -481,20 +635,52 @@
             });
         });
         
+        // 周选择器功能
+        document.querySelectorAll('.week-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.week-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.querySelector(`.week-content[data-week="${tab.dataset.week}"]`).classList.add('active');
+            });
+        });
+        
+        // 进球选项选择功能
+        document.querySelectorAll('.goal-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const week = option.closest('.week-content').dataset.week;
+                const goals = option.dataset.goals;
+                const points = option.dataset.points;
+                
+                // 移除同一进球数级别的选中状态
+                document.querySelectorAll(`.week-content[data-week="${week}"] .goal-option[data-goals="${goals}"]`)
+                    .forEach(o => o.classList.remove('selected'));
+                
+                // 添加选中状态
+                option.classList.add('selected');
+            });
+        });
+        
         // 计算按钮功能
         document.getElementById('calculateBtn').addEventListener('click', calculateProgress);
         
         function calculateProgress() {
             // 获取用户输入
-            const currentPoints = parseInt(document.getElementById('currentPoints').value) || 0;
             const dailyDays = parseInt(document.getElementById('dailyDays').value) || 0;
             const goldSpent = parseInt(document.getElementById('goldSpent').value) || 0;
             const goalsScored = parseInt(document.getElementById('goalsScored').value) || 0;
             const serverPoints = parseInt(document.getElementById('serverProgress').value) || 0;
             
-            // 获取每周任务完成情况
-            const completedGoalWeeks = document.querySelectorAll('#goalWeeks .checkbox-item.selected').length;
+            // 获取每周金币任务完成情况
             const completedGoldWeeks = document.querySelectorAll('#goldWeeks .checkbox-item.selected').length;
+            
+            // 获取每周进球任务完成情况
+            let weeklyGoalPoints = 0;
+            const goalOptions = document.querySelectorAll('.goal-option.selected');
+            goalOptions.forEach(option => {
+                weeklyGoalPoints += parseInt(option.dataset.points);
+            });
             
             // 活动常量
             const totalDays = 37;
@@ -506,22 +692,18 @@
             const dailyPoints = Math.min(dailyDays, totalDays) * 1000;
             const remainingDailyPoints = (totalDays - dailyDays) * 1000;
             
-            // 每周进球任务 (每周4000点)
-            const weeklyGoalPoints = completedGoalWeeks * 4000;
-            const remainingWeeklyGoalPoints = (totalWeeks - completedGoalWeeks) * 4000;
-            
             // 每周金币任务 (每周1500点)
             const weeklyGoldPoints = completedGoldWeeks * 1500;
             const remainingWeeklyGoldPoints = (totalWeeks - completedGoldWeeks) * 1500;
             
-            // 累计进球任务（添加了180球里程碑）
+            // 累计进球任务
             let goalsPoints = 0;
             const goalsMilestones = [
                 {threshold: 30, points: 1200},
                 {threshold: 60, points: 1200},
                 {threshold: 100, points: 1200},
                 {threshold: 140, points: 1600},
-                {threshold: 180, points: 1600}, // 新增180球里程碑
+                {threshold: 180, points: 1600},
                 {threshold: 220, points: 1600},
                 {threshold: 260, points: 1600},
                 {threshold: 300, points: 1600},
@@ -621,12 +803,19 @@
                     }
                 }
                 
+                // 计算剩余每周进球点数
+                const remainingGoalOptions = document.querySelectorAll('.goal-option:not(.selected)');
+                let remainingGoalPoints = 0;
+                remainingGoalOptions.forEach(option => {
+                    remainingGoalPoints += parseInt(option.dataset.points);
+                });
+                
                 if (additionalPoints >= remainingPoints) {
                     resultHTML = `<div class="warning">
                         <p><i class="fas fa-exclamation-triangle"></i> 还需获得 ${remainingPoints.toLocaleString()} 经营点才能达成目标</p>
                         <p><i class="fas fa-lightbulb"></i> 建议方案：</p>
                         <p>• 继续完成每日任务（还可获得 ${remainingDailyPoints.toLocaleString()} 点）</p>
-                        <p>• 完成每周进球任务（还可获得 ${remainingWeeklyGoalPoints.toLocaleString()} 点）</p>
+                        <p>• 完成每周进球任务（还可获得 ${remainingGoalPoints.toLocaleString()} 点）</p>
                         <p>• 完成每周金币任务（还可获得 ${remainingWeeklyGoldPoints.toLocaleString()} 点）</p>
                         <p>• 消费约 ${requiredGold.toLocaleString()} 金币可获得额外 ${additionalPoints.toLocaleString()} 点</p>
                         <p>• 或再进 ${requiredGoals} 球达成${nextGoalThreshold}球里程碑 (${goalsAdditionalPoints.toLocaleString()}点)</p>
@@ -637,7 +826,7 @@
                         <p>还需获得 ${remainingPoints.toLocaleString()} 经营点</p>
                         <p><i class="fas fa-lightbulb"></i> 建议方案：</p>
                         <p>• 确保完成所有每日任务（最多 ${remainingDailyPoints.toLocaleString()} 点）</p>
-                        <p>• 完成所有每周进球任务（最多 ${remainingWeeklyGoalPoints.toLocaleString()} 点）</p>
+                        <p>• 完成所有每周进球任务（最多 ${remainingGoalPoints.toLocaleString()} 点）</p>
                         <p>• 完成所有每周金币任务（最多 ${remainingWeeklyGoldPoints.toLocaleString()} 点）</p>
                         <p>• 消费更多金币（最多可获得 ${additionalPoints.toLocaleString()} 点）</p>
                         <p>• 增加进球数达成里程碑（最多可获得 ${goalsAdditionalPoints.toLocaleString()} 点）</p>
