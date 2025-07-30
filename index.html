@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7周年庆典投资经营活动计算器 - 优化版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            padding: 15px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(253, 187, 45, 0.3);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #fdbb2d;
+            padding-bottom: 15px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #fdbb2d;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            color: #f0f0f0;
+        }
+        
+        .date-info {
+            background: rgba(253, 187, 45, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 10px;
+        }
+        
+        .date-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .current-progress {
+            background: rgba(253, 187, 45, 0.3);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 15px;
+            margin-top: 15px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .current-progress strong {
+            color: #fdbb2d;
+            font-size: 18px;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 14px 5px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            position: relative;
+        }
+        
+        .tab.active {
+            background: #fdbb2d;
+            color: #1a1a1a;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .input-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: #fdbb2d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(253, 187, 45, 0.3);
+        }
+        
+        .input-group {
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .input-group:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fdbb2d, transparent);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 15px;
+            color: #fdbb2d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #444;
+            background: #222;
+            color: #fff;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #fdbb2d;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(253, 187, 45, 0.4);
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .checkbox-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .checkbox-item.selected {
+            background: #fdbb2d;
+            color: #1a1a1a;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        button {
+            background: linear-gradient(to right, #fdbb2d, #b21f1f);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 17px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(178, 31, 31, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover:before {
+            left: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(178, 31, 31, 0.6);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .result-section {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(253, 187, 45, 0.2);
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #fdbb2d;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(253, 187, 45, 0.3);
+        }
+        
+        .progress-container {
+            height: 32px;
+            background: #333;
+            border-radius: 16px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+            position: relative;
+            border: 1px solid #444;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            transition: width 1s ease-in-out;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+        }
+        
+        .progress-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .result-detail {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            font-size: 15px;
+        }
+        
+        .point-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(255,255,255,0.2);
+        }
+        
+        .point-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .summary {
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+        
+        .success {
+            background: rgba(40, 167, 69, 0.3);
+            border: 2px solid #28a745;
+        }
+        
+        .warning {
+            background: rgba(220, 53, 69, 0.3);
+            border: 2px solid #dc3545;
+        }
+        
+        .info {
+            background: rgba(23, 162, 184, 0.3);
+            border: 2px solid #17a2b8;
+        }
+        
+        .tip {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(253, 187, 45, 0.15);
+            border-radius: 12px;
+            line-height: 1.6;
+            border-left: 4px solid #fdbb2d;
+        }
+
+        .goal-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .goal-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .goal-option.selected {
+            background: #fdbb2d;
+            color: #1a1a1a;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+        }
+        
+        .goal-week-container {
+            margin-top: 15px;
+        }
+        
+        .week-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .week-tab {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .week-tab.active {
+            background: #fdbb2d;
+            color: #1a1a1a;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+        }
+        
+        .week-content {
+            display: none;
+        }
+        
+        .week-content.active {
+            display: block;
+        }
+        
+        .explanation {
+            background: rgba(40, 167, 69, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        .explanation h3 {
+            color: #28a745;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+        
+        .calculation-steps {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .calculation-steps div {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .calculation-steps div:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: #fdbb2d;
+            font-size: 18px;
+        }
+        
+        .footer {
+            position: relative;
+            width: 100%;
+            max-width: 850px;
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            border: 1px solid rgba(253, 187, 45, 0.3);
+            backdrop-filter: blur(5px);
+            margin-top: 15px;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            color: #fdbb2d;
+            font-size: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fdbb2d, transparent);
+        }
+        
+        .footer i {
+            color: #b21f1f;
+            font-size: 18px;
+        }
+        
+        .actual-days-section {
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .actual-days-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(23, 162, 184, 0.2);
+            border-left: 4px solid #17a2b8;
+            font-size: 16px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .actual-days-result strong {
+            color: #fdbb2d;
+            font-size: 20px;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background: rgba(253, 187, 45, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            min-width: 70px;
+            text-align: center;
+        }
+        
+        .countdown-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fdbb2d;
+        }
+        
+        .countdown-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        /* 新增：剩余潜力区域 */
+        .remaining-potential {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(253,187,45,0.3);
+            font-size: 14px;
+        }
+        
+        .remaining-potential-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+            text-align: center;
+        }
+        
+        .remaining-potential-item {
+            background: rgba(253, 187, 45, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+        }
+        
+        .potential-value {
+            font-weight: bold;
+            color: #fdbb2d;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            button {
+                padding: 12px 25px;
+                font-size: 16px;
+                width: 100%;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .goal-options, .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .week-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .result-detail {
+                padding: 12px;
+            }
+            
+            .countdown {
+                gap: 8px;
+            }
+            
+            .countdown-item {
+                min-width: 60px;
+                padding: 8px 10px;
+            }
+            
+            .countdown-value {
+                font-size: 20px;
+            }
+            
+            .remaining-potential-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 22px;
+            }
+            
+            .section-title {
+                font-size: 17px;
+            }
+            
+            .date-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .input-group {
+                padding: 14px;
+            }
+            
+            .goal-option, .checkbox-item {
+                font-size: 13px;
+                padding: 8px;
+            }
+            
+            .result-header {
+                font-size: 20px;
+            }
+        }
+        
+        /* 防止移动端缩放 */
+        input, select, button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> 7周年庆典投资经营活动计算器</h1>
+            <div class="subtitle">模拟计算投资经营活动进度</div>
+            <div class="date-info">
+                <div class="date-info-item">
+                    <i class="fas fa-calendar-alt"></i> 活动时间：2025年7月17日 - 2025年8月22日
+                </div>
+                <div class="date-info-item">
+                    <i class="fas fa-clock"></i> 活动时长：37天 / 6周
+                </div>
+            </div>
+            <div class="current-progress" id="currentProgress">
+                <!-- 实时累计经营点将在这里显示 -->
+            </div>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-value" id="days">0</div>
+                    <div class="countdown-label">剩余天数</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="hours">0</div>
+                    <div class="countdown-label">小时</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="minutes">0</div>
+                    <div class="countdown-label">分钟</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="seconds">0</div>
+                    <div class="countdown-label">秒</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="input">玩家进度</div>
+            <div class="tab" data-tab="result">计算结果</div>
+            <div class="tab" data-tab="missed">漏做每日任务计算</div>
+        </div>
+        
+        <div class="tab-content active" id="input-tab">
+            <div class="input-section">
+                <div class="section-title">
+                    <i class="fas fa-user"></i> 玩家基本信息
+                </div>
+                
+                <div class="input-group">
+                    <label for="dailyDays"><i class="fas fa-calendar-day"></i> 已完成每日任务天数</label>
+                    <input type="number" id="dailyDays" min="0" max="37" value="0">
+                    <div class="error-message" id="dailyDaysError">已完成天数不能超过活动天数(37天)</div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-futbol"></i> 每周进球任务完成情况</label>
+                    <div class="week-selector" id="weekSelector">
+                        <div class="week-tab active" data-week="1">第1周</div>
+                        <div class="week-tab" data-week="2">第2周</div>
+                        <div class="week-tab" data-week="3">第3周</div>
+                        <div class="week-tab" data-week="4">第4周</div>
+                        <div class="week-tab" data-week="5">第5周</div>
+                        <div class="week-tab" data-week="6">第6周</div>
+                    </div>
+                    
+                    <div class="goal-week-container">
+                        <div class="week-content active" data-week="1">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="2">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="3">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="4">
+                            <div class="goal-options">
+                               <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="5">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000点)</div>
+                            </div>
+                        </div>
+                        <div class="week-content" data-week="6">
+                            <div class="goal-options">
+                                <div class="goal-option" data-points="500" data-goals="8">累计进8球 (500点)</div>
+                                <div class="goal-option" data-points="800" data-goals="16">累计进16球 (800点)</div>
+                                <div class="goal-option" data-points="800" data-goals="24">累计进24球 (800点)</div>
+                                <div class="goal-option" data-points="900" data-goals="32">累计进32球 (900点)</div>
+                                <div class="goal-option" data-points="1000" data-goals="40">累计进40球 (1000点)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-shopping-cart"></i> 每周金币任务完成情况</label>
+                    <div class="checkbox-group" id="goldWeeks">
+                        <div class="checkbox-item" data-value="1"><i class="fas fa-coins"></i> 第1周</div>
+                        <div class="checkbox-item" data-value="2"><i class="fas fa-coins"></i> 第2周</div>
+                        <div class="checkbox-item" data-value="3"><i class="fas fa-coins"></i> 第3周</div>
+                        <div class="checkbox-item" data-value="4"><i class="fas fa-coins"></i> 第4周</div>
+                        <div class="checkbox-item" data-value="5"><i class="fas fa-coins"></i> 第5周</div>
+                        <div class="checkbox-item" data-value="6"><i class="fas fa-coins"></i> 第6周</div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="goldSpent"><i class="fas fa-coins"></i> 已消费金币</label>
+                    <input type="number" id="goldSpent" min="0" value="0">
+                </div>
+                
+                <div class="input-group">
+                    <label for="goalsScored"><i class="fas fa-bullseye"></i> 个人累计进球数</label>
+                    <input type="number" id="goalsScored" min="0" value="350">
+                </div>
+                
+                <div class="input-group">
+                    <label for="serverProgress"><i class="fas fa-users"></i> 全服任务完成度</label>
+                    <select id="serverProgress">
+                        <option value="0">尚未完成</option>
+                        <option value="800">300万进球（800点）</option>
+                        <option value="1600">1500万进球（1600点）</option>
+                        <option value="2800">3000万进球（2800点）</option>
+                        <option value="4400">6000万进球（4400点）</option>
+                        <option value="6400">9000万进球（6400点）</option>
+                        <option value="8900">12000万进球（8900点）</option>
+                        <option value="11900">16000万进球（11900点）</option>
+                        <option value="16900" selected>20000万进球（16900点）</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button id="calculateBtn">
+                    <i class="fas fa-calculator"></i> 开始计算
+                </button>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="result-tab">
+            <div class="result-section" id="resultSection">
+                <div class="result-header">活动进度分析</div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar">0%</div>
+                    <div class="progress-label">目标: 105,000点</div>
+                </div>
+                
+                <div class="result-detail">
+                    <div class="point-item">
+                        <span>全服任务：</span>
+                        <span id="serverPoints">16,900</span>
+                    </div>
+                    <div class="point-item">
+                        <span>每日任务：</span>
+                        <span id="dailyPoints">0</span>
+                    </div>
+                    <div class="point-item">
+                        <span>每周进球任务：</span>
+                        <span id="weeklyGoalPoints">0</span>
+                    </div>
+                    <div class="point-item">
+                        <span>每周金币任务：</span>
+                        <span id="weeklyGoldPoints">0</span>
+                    </div>
+                    <div class="point-item">
+                        <span>累计个人进球任务：</span>
+                        <span id="goalsPoints">0</span>
+                    </div>
+                    <div class="point-item">
+                        <span>累计消费里程碑：</span>
+                        <span id="spendingPoints">0</span>
+                    </div>
+                    <div class="point-item">
+                        <span>额外消费奖励：</span>
+                        <span id="extraSpending">0</span>
+                    </div>
+                    <div class="point-item" style="font-weight: bold; border-top: 1px solid #fdbb2d; padding-top: 10px;">
+                        <span>预计经营点数：</span>
+                        <span id="totalPoints">0</span>
+                    </div>
+                </div>
+                
+                <div class="summary" id="resultSummary">
+                    <!-- 结果摘要将在这里显示 -->
+                </div>
+                
+                <div class="tip">
+                    <p><i class="fas fa-lightbulb"></i> <strong>活动提示：</strong> 完成所有每日任务、每周任务、累计任务和全服任务，并消费11,000金币可稳定获得96+增能礼包</p>
+                    <p><i class="fas fa-futbol"></i> <strong>最佳策略：</strong> 每周完成40个进球和消费2000金币可最大化收益！</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="missed-tab">
+            <div class="result-section">
+                <div class="result-header">漏做每日任务计算</div>
+                
+                <div class="actual-days-section">
+                    <div class="input-group">
+                        <label for="actualPoints"><i class="fas fa-star"></i> 实际累计经营点数</label>
+                        <input type="number" id="actualPoints" min="0" placeholder="输入您的实际经营点数">
+                    </div>
+                    
+                    <div class="btn-container">
+                        <button id="calculateActualBtn">
+                            <i class="fas fa-calendar-check"></i> 开始计算
+                        </button>
+                    </div>
+                    
+                    <div class="actual-days-result" id="actualDaysResult">
+                        <!-- 结果显示在这里 -->
+                    </div>
+                    
+                    <div class="explanation">
+                        <h3><i class="fas fa-info-circle"></i> 计算说明</h3>
+                        <div class="calculation-steps">
+                            <div>请先使用"玩家进度"标签页以0天模拟计算出预计经营点</div>
+                            <div>该功能可帮助您了解实际完成的每日任务天数</div>
+                            <div>每日任务每天可获得1000点经营点数</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <i class="fas fa-user"></i>@大众评球 | 不出维埃拉不改名(已兑换) 
+    </div>
+
+    <script>
+        // 活动开始日期：2025年7月17日
+        const ACTIVITY_START_DATE = new Date(2025, 6, 17);
+        // 活动结束日期：2025年8月22日
+        const ACTIVITY_END_DATE = new Date(2025, 7, 22, 11, 0, 0);
+        
+        // 进球里程碑
+        const GOALS_MILESTONES = [
+            {threshold: 30, points: 1200},
+            {threshold: 60, points: 1200},
+            {threshold: 100, points: 1200},
+            {threshold: 140, points: 1600},
+            {threshold: 180, points: 1600},
+            {threshold: 220, points: 1600},
+            {threshold: 260, points: 1600},
+            {threshold: 300, points: 1600},
+            {threshold: 350, points: 2000}
+        ];
+        
+        // Tab切换功能
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+            });
+        });
+        
+        // 复选框选择功能
+        document.querySelectorAll('.checkbox-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.classList.contains('selected')) {
+                    item.classList.remove('selected');
+                } else {
+                    item.classList.add('selected');
+                }
+            });
+        });
+        
+        // 周选择器功能
+        document.querySelectorAll('.week-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.week-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.querySelector(`.week-content[data-week="${tab.dataset.week}"]`).classList.add('active');
+            });
+        });
+        
+        // 进球选项选择功能
+        document.querySelectorAll('.goal-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const week = option.closest('.week-content').dataset.week;
+                const goals = option.dataset.goals;
+                const points = option.dataset.points;
+                
+                // 移除同一进球数级别的选中状态
+                document.querySelectorAll(`.week-content[data-week="${week}"] .goal-option[data-goals="${goals}"]`)
+                    .forEach(o => o.classList.remove('selected'));
+                
+                // 添加选中状态
+                option.classList.add('selected');
+            });
+        });
+        
+        // 计算按钮功能
+        document.getElementById('calculateBtn').addEventListener('click', calculateProgress);
+        document.getElementById('calculateActualBtn').addEventListener('click', calculateActualDays);
+        
+        // 输入验证
+        document.getElementById('dailyDays').addEventListener('input', function() {
+            const maxDays = 37;
+            const value = parseInt(this.value) || 0;
+            const errorElement = document.getElementById('dailyDaysError');
+            
+            if (value > maxDays) {
+                errorElement.style.display = 'block';
+                this.value = maxDays;
+            } else {
+                errorElement.style.display = 'none';
+            }
+        });
+        
+        // 修复消费金币计算逻辑
+        function calculateGoldPoints(goldSpent) {
+            // 累计消费任务
+            let spendingPoints = 0;
+            const spendingMilestones = [
+                {threshold: 1000, points: 1000},
+                {threshold: 2500, points: 1500},
+                {threshold: 5000, points: 2000},
+                {threshold: 10000, points: 2000},
+                {threshold: 16000, points: 2500},
+                {threshold: 24000, points: 3000}
+            ];
+            
+            // 计算里程碑奖励
+            spendingMilestones.forEach(milestone => {
+                if (goldSpent >= milestone.threshold) {
+                    spendingPoints += milestone.points;
+                }
+            });
+            
+            // 额外消费奖励（每1000金币500点，最多150次）
+            const extraSpendingPoints = Math.min(Math.floor(goldSpent / 1000), 150) * 500;
+            
+            return {
+                milestonePoints: spendingPoints,
+                extraPoints: extraSpendingPoints,
+                totalPoints: spendingPoints + extraSpendingPoints
+            };
+        }
+        
+        // 计算当前活动进度
+        function calculateCurrentProgress() {
+            const now = new Date();
+            const startDate = new Date(2025, 6, 17);
+            
+            // 计算已进行天数（包含开始当天）
+            const timeDiff = now.getTime() - startDate.getTime();
+            let daysPassed = Math.min(Math.floor(timeDiff / (1000 * 3600 * 24)) + 1, 37);
+            
+            // 计算自然周数（每周一刷新）
+            const getWeekNumber = (date) => {
+                // 活动第一周的周一（7月14日）
+                const firstMonday = new Date(2025, 6, 14); 
+                // 计算当前日期所在周的周一
+                const dayOfWeek = date.getDay() || 7; // 1=周一,7=周日
+                const currentMonday = new Date(date);
+                currentMonday.setDate(date.getDate() - dayOfWeek + 1);
+                currentMonday.setHours(0, 0, 0, 0);
+                
+                // 计算周数差
+                const timeDiff = currentMonday - firstMonday;
+                const weeksDiff = Math.floor(timeDiff / (7 * 24 * 3600 * 1000));
+                return Math.max(weeksDiff + 1, 1); // 至少为1
+            };
+            
+            let weekPassed = getWeekNumber(now);
+            weekPassed = Math.min(weekPassed, 6); // 最大6周
+            
+            // 计算剩余天数
+            const remainingDays = Math.max(0, 37 - daysPassed);
+            
+            // 计算剩余周数（不包括当前周）
+            const remainingWeeks = Math.max(0, 6 - weekPassed );
+            
+            // 计算剩余任务潜力
+            const remainingDailyPoints = remainingDays * 1000;
+            const remainingGoalPoints = remainingWeeks * 4000;  // 每周进球任务最多4000点
+            const remainingGoldPoints = remainingWeeks * 1500;  // 每周金币任务1500点
+            
+            // 各任务点数计算
+            const dailyPoints = daysPassed * 1000;                // 每日任务
+            const weeklyGoalPoints = weekPassed * 4000;           // 每周进球任务（按最大4000点计算）
+            const weeklyGoldPoints = weekPassed * 1500;           // 每周金币任务
+            const basePoints = 16900;                             // 全服基础点数
+            
+            // 累计进球任务（350球里程碑）
+            let goalsPoints = GOALS_MILESTONES.reduce((sum, m) => 
+                350 >= m.threshold ? sum + m.points : sum, 0);
+            
+            // 消费任务计算（每周2000金币）
+            const goldSpent = weekPassed * 2000;  // 每周消费2000金币
+            const goldPoints = calculateGoldPoints(goldSpent);
+            
+            // 总点数计算
+            const totalPoints = basePoints + dailyPoints + weeklyGoalPoints + 
+                               weeklyGoldPoints + goalsPoints + goldPoints.totalPoints;
+            
+            return {
+                date: `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`,
+                points: totalPoints,
+                details: {
+                    basePoints,
+                    daily: dailyPoints,
+                    weeklyGoal: weeklyGoalPoints,
+                    weeklyGold: weeklyGoldPoints,
+                    goals: goalsPoints,
+                    goldSpent,
+                    goldMilestone: goldPoints.milestonePoints,
+                    goldExtra: goldPoints.extraPoints
+                },
+                remaining: {
+                    days: remainingDays,
+                    weeks: remainingWeeks,
+                    dailyPoints: remainingDailyPoints,
+                    goalPoints: remainingGoalPoints,
+                    goldPoints: remainingGoldPoints
+                }
+            };
+        }
+        
+        // 更新活动倒计时
+        function updateCountdown() {
+            const now = new Date();
+            const timeDiff = ACTIVITY_END_DATE - now;
+            
+            if (timeDiff <= 0) {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                return;
+            }
+            
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+            
+            setTimeout(updateCountdown, 1000);
+        }
+        
+        // 更新实时累计经营点显示
+        function updateCurrentProgressDisplay() {
+            const progress = calculateCurrentProgress();
+            const progressElement = document.getElementById('currentProgress');
+            
+            progressElement.innerHTML = `
+                <i class="fas fa-chart-line"></i> 截至今日（${progress.date}）<br>实时累计经营点：<strong>${progress.points.toLocaleString()}</strong> 
+                <div style="font-size: 13px; margin-top: 5px;">
+                    (tip：此数据基于每周消费2000金币的标准计算)
+                </div>
+                
+                <div class="remaining-potential">
+                    <div style="font-size: 14px; margin-top: 10px;"><i class="fas fa-bolt"></i> 剩余任务：</div>
+                    <div class="remaining-potential-grid">
+                        <div class="remaining-potential-item">
+                            <div>每日任务</div>
+                            <div class="potential-value">${progress.remaining.days}天</div>
+                            <div>${progress.remaining.dailyPoints.toLocaleString()}点</div>
+                        </div>
+                        <div class="remaining-potential-item">
+                            <div>每周进球任务</div>
+                            <div class="potential-value">${progress.remaining.weeks}周</div>
+                            <div>${progress.remaining.goalPoints.toLocaleString()}点</div>
+                        </div>
+                        <div class="remaining-potential-item">
+                            <div>每周金币任务</div>
+                            <div class="potential-value">${progress.remaining.weeks}周</div>
+                            <div>${progress.remaining.goldPoints.toLocaleString()}点</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 设置每日凌晨0点更新
+        function scheduleDailyUpdate() {
+            const now = new Date();
+            const nextMidnight = new Date(now);
+            nextMidnight.setDate(nextMidnight.getDate() + 1);
+            nextMidnight.setHours(0, 0, 0, 0);
+            
+            const timeToMidnight = nextMidnight.getTime() - now.getTime();
+            
+            setTimeout(() => {
+                updateCurrentProgressDisplay();
+                // 每天重复
+                setInterval(updateCurrentProgressDisplay, 24 * 60 * 60 * 1000);
+            }, timeToMidnight);
+        }
+        
+        // 计算活动已开始天数
+        function getDaysSinceStart() {
+            const now = new Date();
+            const startDate = new Date(2025, 6, 17);
+            
+            // 如果当前时间早于活动开始时间
+            if (now < startDate) return 0;
+            
+            // 如果当前时间晚于活动结束时间
+            if (now > ACTIVITY_END_DATE) return 37;
+            
+            // 计算已进行天数（包含开始当天）
+            const timeDiff = now.getTime() - startDate.getTime();
+            return Math.floor(timeDiff / (1000 * 3600 * 24)) + 1;
+        }
+        
+        function calculateProgress() {
+            // 获取用户输入
+            const dailyDays = parseInt(document.getElementById('dailyDays').value) || 0;
+            const goldSpent = parseInt(document.getElementById('goldSpent').value) || 0;
+            const goalsScored = parseInt(document.getElementById('goalsScored').value) || 0;
+            const serverPoints = parseInt(document.getElementById('serverProgress').value) || 0;
+            
+            // 获取每周金币任务完成情况
+            const completedGoldWeeks = document.querySelectorAll('#goldWeeks .checkbox-item.selected').length;
+            
+            // 获取每周进球任务完成情况
+            let weeklyGoalPoints = 0;
+            const goalOptions = document.querySelectorAll('.goal-option.selected');
+            goalOptions.forEach(option => {
+                weeklyGoalPoints += parseInt(option.dataset.points);
+            });
+            
+            // 活动常量
+            const totalDays = 37;
+            const totalWeeks = 6;
+            const targetPoints = 105000;
+            
+            // 计算各任务点数
+            // 每日任务点数 (每天1000点)
+            const dailyPoints = Math.min(dailyDays, totalDays) * 1000;
+            const remainingDailyPoints = (totalDays - dailyDays) * 1000;
+            
+            // 每周金币任务 (每周1500点)
+            const weeklyGoldPoints = completedGoldWeeks * 1500;
+            const remainingWeeklyGoldPoints = (totalWeeks - completedGoldWeeks) * 1500;
+            
+            // 累计进球任务
+            let goalsPoints = 0;
+            GOALS_MILESTONES.forEach(milestone => {
+                if (goalsScored >= milestone.threshold) {
+                    goalsPoints += milestone.points;
+                }
+            });
+            
+            // 使用修复后的消费金币计算逻辑
+            const goldPoints = calculateGoldPoints(goldSpent);
+            const spendingPoints = goldPoints.milestonePoints;
+            const extraSpendingPoints = goldPoints.extraPoints;
+            
+            // 计算总点数
+            const totalEarnedPoints =   dailyPoints + 
+                                     weeklyGoalPoints + 
+                                     weeklyGoldPoints + 
+                                     goalsPoints + 
+                                     spendingPoints + 
+                                     extraSpendingPoints + 
+                                     serverPoints;
+            
+            // 计算剩余点数
+            const remainingPoints = targetPoints - totalEarnedPoints;
+            
+            // 计算进度百分比
+            const progressPercentage = Math.min(Math.round((totalEarnedPoints / targetPoints) * 100), 100);
+            
+            // 更新UI
+            document.getElementById('serverPoints').textContent = serverPoints.toLocaleString();
+            document.getElementById('dailyPoints').textContent = dailyPoints.toLocaleString();
+            document.getElementById('weeklyGoalPoints').textContent = weeklyGoalPoints.toLocaleString();
+            document.getElementById('weeklyGoldPoints').textContent = weeklyGoldPoints.toLocaleString();
+            document.getElementById('goalsPoints').textContent = goalsPoints.toLocaleString();
+            document.getElementById('spendingPoints').textContent = spendingPoints.toLocaleString();
+            document.getElementById('extraSpending').textContent = extraSpendingPoints.toLocaleString();
+            document.getElementById('totalPoints').textContent = totalEarnedPoints.toLocaleString();
+            
+            document.getElementById('progressBar').textContent = `${progressPercentage}%`;
+            document.getElementById('progressBar').style.width = `${progressPercentage}%`;
+            
+            let resultHTML = "";
+            if (remainingPoints <= 0) {
+                resultHTML = `<div class="success">
+                    <i class="fas fa-trophy"></i> 恭喜！您已达成目标，可以获得96+增能礼包！
+                </div>`;
+            } else {
+                // 计算所需金币（修复逻辑）
+                let requiredGold = 0;
+                let additionalPoints = 0;
+                let currentGold = goldSpent;
+                
+                // 消费里程碑
+                const spendingMilestones = [
+                    {threshold: 1000, points: 1000},
+                    {threshold: 2500, points: 1500},
+                    {threshold: 5000, points: 2000},
+                    {threshold: 10000, points: 2000},
+                    {threshold: 16000, points: 2500},
+                    {threshold: 24000, points: 3000}
+                ];
+                
+                // 已使用的额外奖励次数（每1000金币500点）
+                const usedExtra = Math.min(Math.floor(currentGold / 1000), 150);
+                let remainingExtra = 150 - usedExtra;
+                
+                // 复制未完成的里程碑
+                let remainingMilestones = spendingMilestones.filter(milestone => currentGold < milestone.threshold);
+                
+                // 额外奖励计数
+                let extraCount = 0;
+                
+                // 循环直到满足剩余点数，或达到额外奖励次数上限
+                while (additionalPoints < remainingPoints && extraCount < remainingExtra && requiredGold < 250000) {
+                    // 每次增加1000金币
+                    requiredGold += 1000;
+                    // 增加500点（额外奖励）
+                    additionalPoints += 500;
+                    extraCount++;
+                    
+                    // 当前总消费
+                    const totalSpent = currentGold + requiredGold;
+                    
+                    // 检查里程碑
+                    for (let i = 0; i < remainingMilestones.length; i++) {
+                        const m = remainingMilestones[i];
+                        if (totalSpent >= m.threshold) {
+                            additionalPoints += m.points;
+                            // 移除该里程碑
+                            remainingMilestones.splice(i, 1);
+                            i--; // 调整索引
+                        }
+                    }
+                    
+                    // 如果已经满足了剩余点数，提前退出
+                    if (additionalPoints >= remainingPoints) {
+                        break;
+                    }
+                }
+                
+                // 计算所需进球
+                let requiredGoals = 0;
+                let goalsAdditionalPoints = 0;
+                let nextGoalThreshold = 0;
+                
+                // 找到下一个进球里程碑
+                for (const milestone of GOALS_MILESTONES) {
+                    if (goalsScored < milestone.threshold) {
+                        requiredGoals = milestone.threshold - goalsScored;
+                        goalsAdditionalPoints = milestone.points;
+                        nextGoalThreshold = milestone.threshold;
+                        break;
+                    }
+                }
+                
+                // 计算剩余每周进球点数
+                const remainingGoalOptions = document.querySelectorAll('.goal-option:not(.selected)');
+                let remainingGoalPoints = 0;
+                remainingGoalOptions.forEach(option => {
+                    remainingGoalPoints += parseInt(option.dataset.points);
+                });
+                
+                if (additionalPoints >= remainingPoints) {
+                    resultHTML = `<div class="warning">
+                        <p><i class="fas fa-exclamation-triangle"></i> 还需获得 ${remainingPoints.toLocaleString()} 经营点才能达成目标</p>
+                        <p><i class="fas fa-lightbulb"></i> 建议方案：</p>
+                        <p>• 继续完成每日任务（还可获得 ${remainingDailyPoints.toLocaleString()} 点）</p>
+                        <p>• 完成每周进球任务（还可获得 ${remainingGoalPoints.toLocaleString()} 点）</p>
+                        <p>• 完成每周金币任务（还可获得 ${remainingWeeklyGoldPoints.toLocaleString()} 点）</p>
+                        <p>• 或再消费约 ${requiredGold.toLocaleString()} 金币可获得额外 ${additionalPoints.toLocaleString()} 点</p>
+                        ${requiredGoals > 0 ? `<p>• 或再进 ${requiredGoals} 球达成${nextGoalThreshold}球里程碑 (${goalsAdditionalPoints.toLocaleString()}点)</p>` : ''}
+                    </div>`;
+                } else {
+                    resultHTML = `<div class="warning">
+                        <p><i class="fas fa-exclamation-circle"></i> 很遗憾，按照当前进度您可能无法达成目标</p>
+                        <p>还需获得 ${remainingPoints.toLocaleString()} 经营点</p>
+                        <p><i class="fas fa-lightbulb"></i> 建议方案：</p>
+                        <p>• 确保完成所有每日任务（最多 ${remainingDailyPoints.toLocaleString()} 点）</p>
+                        <p>• 完成所有每周进球任务（最多 ${remainingGoalPoints.toLocaleString()} 点）</p>
+                        <p>• 完成所有每周金币任务（最多 ${remainingWeeklyGoldPoints.toLocaleString()} 点）</p>
+                        <p>• 消费更多金币（最多可获得 ${additionalPoints.toLocaleString()} 点）</p>
+                        ${requiredGoals > 0 ? `<p>• 增加进球数达成里程碑（最多可获得 ${goalsAdditionalPoints.toLocaleString()} 点）</p>` : ''}
+                    </div>`;
+                }
+            }
+            
+            document.getElementById('resultSummary').innerHTML = resultHTML;
+            document.getElementById('resultSection').style.display = 'block';
+            
+            // 切换到结果标签页
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector('.tab[data-tab="result"]').classList.add('active');
+            document.getElementById('result-tab').classList.add('active');
+        }
+        
+        // 计算实际完成天数（修复版）
+        function calculateActualDays() {
+            // 获取用户输入的实际点数
+            const actualPoints = parseInt(document.getElementById('actualPoints').value) || 0;
+            const resultElement = document.getElementById('actualDaysResult');
+            resultElement.style.display = 'block';
+            
+            if (!actualPoints) {
+                resultElement.innerHTML = `<div class="warning">
+                    <i class="fas fa-exclamation-circle"></i> 请输入您的实际累计经营点数！
+                </div>`;
+                return;
+            }
+            
+            // 重新获取其他输入数据（除了每日任务天数）
+            const goldSpent = parseInt(document.getElementById('goldSpent').value) || 0;
+            const goalsScored = parseInt(document.getElementById('goalsScored').value) || 0;
+            const serverPoints = parseInt(document.getElementById('serverProgress').value) || 0;
+            
+            // 获取每周金币任务完成情况
+            const completedGoldWeeks = document.querySelectorAll('#goldWeeks .checkbox-item.selected').length;
+            
+            // 获取每周进球任务完成情况
+            let weeklyGoalPoints = 0;
+            document.querySelectorAll('.goal-option.selected').forEach(option => {
+                weeklyGoalPoints += parseInt(option.dataset.points);
+            });
+            
+            // 计算进球里程碑点数
+            let goalsPoints = 0;
+            GOALS_MILESTONES.forEach(milestone => {
+                if (goalsScored >= milestone.threshold) {
+                    goalsPoints += milestone.points;
+                }
+            });
+            
+            // 计算消费金币点数
+            const goldPoints = calculateGoldPoints(goldSpent);
+            const spendingPoints = goldPoints.milestonePoints;
+            const extraSpendingPoints = goldPoints.extraPoints;
+            
+            // 计算基础点数（不含每日任务）
+            const basePointsWithoutDaily = weeklyGoalPoints + 
+                                         (completedGoldWeeks * 1500) + 
+                                         goalsPoints + 
+                                         spendingPoints + 
+                                         extraSpendingPoints + 
+                                         serverPoints;
+            
+            // 计算每日任务带来的点数 = 实际点数 - 基础点数
+            const dailyPointsFromActual = actualPoints - basePointsWithoutDaily;
+            
+            // 如果基础点数已经大于实际点数
+            if (dailyPointsFromActual < 0) {
+                resultElement.innerHTML = `
+                    <div class="warning">
+                        <i class="fas fa-exclamation-circle"></i> 输入有误：实际点数（${actualPoints}）不能小于基础点数（${basePointsWithoutDaily}）
+                        <div style="margin-top: 15px; font-size: 15px;">
+                            请检查其他任务完成情况是否准确
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 计算天数 = dailyPointsFromActual / 1000
+            let actualDays = Math.round(dailyPointsFromActual / 1000);
+            
+            // 获取活动已开始天数
+            const daysSinceStart = getDaysSinceStart();
+            
+            // 验证：实际完成天数不能超过活动已开始天数
+            if (actualDays > daysSinceStart) {
+                resultElement.innerHTML = `
+                    <div class="warning">
+                        <i class="fas fa-exclamation-triangle"></i> 计算结果错误！
+
+                        <div style="margin-top: 10px; font-size: 15px;">
+                            请按实际情况输入信息，或检查其他任务完成情况是否准确
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 验证：实际完成天数不能超过活动总天数
+            if (actualDays > 37) {
+                resultElement.innerHTML = `
+                    <div class="warning">
+                        <i class="fas fa-exclamation-triangle"></i> 计算结果错误！
+                        <div style="margin-top: 15px; font-size: 15px;">
+                            计算出的实际每日任务天数(${actualDays}天)超过了活动总天数(37天)
+                        </div>
+                        <div style="margin-top: 10px; font-size: 15px;">
+                            请按实际情况输入信息，或检查其他任务完成情况是否准确
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 显示计算结果
+            resultElement.innerHTML = `
+                <div class="info">
+                    <i class="fas fa-check-circle"></i> 计算结果
+                    <div style="margin-top: 15px; text-align: center;">
+                        <div>实际每日任务天数：<strong>${actualDays}</strong> 天</div>
+                        <div style="margin-top: 15px; font-size: 16px;">
+                            每日任务点数：${(actualDays * 1000).toLocaleString()}点
+                        </div>
+                        <div style="margin-top: 8px; font-size: 16px;">
+                            基础点数：${basePointsWithoutDaily.toLocaleString()}点
+                        </div>
+                        <div style="margin-top: 15px; font-size: 15px; color: #fdbb2d;">
+                            <i class="fas fa-info-circle"></i> 活动已开始天数：${daysSinceStart}天
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentProgressDisplay();
+            scheduleDailyUpdate();
+            updateCountdown();
+            
+            // 为所有输入框添加点击效果
+            document.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#fdbb2d';
+                    this.style.boxShadow = '0 0 8px rgba(253, 187, 45, 0.5)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#444';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // 解决移动端按钮点击延迟问题
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    this.classList.add('active');
+                });
+                
+                button.addEventListener('touchend', function() {
+                    this.classList.remove('active');
+                });
+            });
+            
+            // 初始化默认选择
+            document.querySelectorAll('.goal-option[data-points="1000"]').forEach(option => {
+                option.classList.add('');
+            });
+            
+            document.querySelectorAll('.checkbox-item').forEach(item => {
+                const week = parseInt(item.dataset.value);
+                if (week <= 4) {
+                    item.classList.add('');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
